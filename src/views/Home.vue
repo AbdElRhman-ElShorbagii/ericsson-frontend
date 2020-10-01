@@ -28,51 +28,108 @@
         color="grey darken-1 shrink"
         size="32"
       ></v-avatar>
-      <span style="margin-left:10px">Abdelrhman</span>
+      <span style="margin-left:10px">Ayman</span>
     </v-app-bar>
 
     <v-main class="grey lighten-3">
       <v-container>
         <v-row>
           <v-col
-            cols="12"
-            sm="3"
+            cols="4"
           >
             <v-sheet
               rounded="lg"
-              min-height="268"
+              min-height="100"
             >
-                <v-list dense>
-                  <v-subheader>Add Records</v-subheader>
-                  <v-list-item-group
-                    v-model="item"
-                    color="primary"
-                  >
-                    <v-list-item
-                      v-for="(item, i) in items"
-                      :key="i"
-                    >
-                      <v-list-item-icon>
-                        <v-icon v-text="item.icon"></v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-content>
-                        <v-list-item-title v-text="item.text"></v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
-                </v-list>
+              <v-row style="padding:15px">
+                <v-col
+                  cols="12"
+                >
+                  <v-date-picker
+                    v-model="dates"
+                    range
+                  ></v-date-picker>
+                </v-col>
+                <v-col
+                  cols="12"
+                >
+                  <v-text-field
+                    v-model="dateRangeText"
+                    label="Date range"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
             </v-sheet>
           </v-col>
+          <v-col
+            cols="8"
+          >
+            <v-sheet
+              rounded="lg"
+              min-height="100"
+            >
+              <v-row style="padding:15px">
+                <v-col
+                  cols="12"
+                >
+                <h1>Statisitcs</h1>
+                </v-col>
+              </v-row>
 
+            </v-sheet>
+          </v-col>
           <v-col
             cols="12"
-            sm="9"
           >
             <v-sheet
               min-height="70vh"
               rounded="lg"
             >
-              <!--  -->
+            <v-row>
+              <v-col cols="6">
+                <v-card style="margin:10px;padding:10px">
+                  <h3>Total Case Detected</h3>
+                  <apexchart width="475" type="donut" :options="options" :series="series"></apexchart>
+                </v-card>
+              </v-col>
+              <v-col cols="6">
+                <v-card style="margin:10px;padding:10px">
+                  <h3>Chronic TTs Vs Vendor</h3>
+                  <apexchart type="bar" height="350" :options="chartOptions" :series="series1"></apexchart>
+                </v-card>
+              </v-col>
+            </v-row>
+              <v-row>
+              <v-col cols="6">
+                <v-card style="margin:10px;padding:10px">
+                  <h3>TTs Status</h3>
+                  <apexchart width="500" type="donut" :options="options2" :series="series2"></apexchart>
+                </v-card>
+              </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="4">
+                  <v-card style="margin:10px;padding:10px">
+                    <h3>Runing TTs</h3>
+                    <apexchart width="280" type="donut" :options="options2" :series="series2"></apexchart>
+                  </v-card>
+                </v-col>
+                <v-col cols="4">
+                  <v-card style="margin:10px;padding:10px">
+                    <h3>Resolved TTs</h3>
+                    <apexchart width="280" type="donut" :options="options2" :series="series2"></apexchart>
+                  </v-card>
+                </v-col>
+                <v-col cols="4">
+                  <v-card style="margin:10px;padding:10px">
+                    <h3>Pending TTs</h3>
+                    <apexchart width="280" type="donut" :options="options2" :series="series2"></apexchart>
+                  </v-card>
+                </v-col>
+            </v-row>
             </v-sheet>
           </v-col>
         </v-row>
@@ -86,12 +143,63 @@
     data: () => ({
       links: [
         'Home',
+        'Chronic Records',
       ],
-      items: [
-        { text: 'Add Chronic Record', icon: 'mdi-clock' },
-        { text: 'Audience', icon: 'mdi-account' },
-        { text: 'Conversions', icon: 'mdi-flag' },
-      ],
+      dates: [],
+
+      //Total Case Detected
+      options: {},
+      series: [44, 55, 41, 17, 15],
+
+      //Chronic TTs Vs Vendor
+          series1: [{
+            name: '2G',
+            data: [44, 55, 41]
+          }, {
+            name: '3G',
+            data: [13, 23, 20]
+          }, {
+          }],
+          chartOptions: {
+            chart: {
+              type: 'bar',
+              height: 350,
+              stacked: true,
+              stackType: '100'
+            },
+            responsive: [{
+              breakpoint: 480,
+              options: {
+                legend: {
+                  position: 'bottom',
+                  offsetX: -10,
+                  offsetY: 0
+                }
+              }
+            }],
+            xaxis: {
+              categories: ['E///', 'Huawei', 'ZTE'
+              ],
+            },
+            fill: {
+              opacity: 1
+            },
+            legend: {
+              position: 'right',
+              offsetX: 0,
+              offsetY: 50
+            },
+          },
+
+          //TTs status
+          options2: {},
+          series2: [44, 55, 41, 17, 15],
+
     }),
+    computed: {
+      dateRangeText () {
+        return this.dates.join(' ~ ')
+      },
+    },
   }
 </script>
